@@ -31,8 +31,21 @@ namespace AdminPanel
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            using var conn = new MySqlConnection(CONN_STRING);
-            optionsBuilder.UseMySql(CONN_STRING, ServerVersion.AutoDetect(conn));
+            try
+            {
+                using var conn = new MySqlConnection(CONN_STRING);
+                optionsBuilder.UseMySql(CONN_STRING, ServerVersion.AutoDetect(conn));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Hiba az adatbázishoz csatlakozás közben:\n\n{ex.Message}\n\nAz OK gombra kattintva a program kilép!",
+                    "Hiba",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                Environment.Exit(-1);
+            }
         }
     }
 
