@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace AdminPanel
 {
     public partial class AdminPanel : Form
@@ -11,7 +13,11 @@ namespace AdminPanel
         {
             using (var ctx = new FitnessContext())
             {
-                MessageBox.Show(string.Join("\n", ctx.Allergenes.Select(a => $"{a.Id},{a.Name}")));
+                foreach (var name in ctx.Model.GetEntityTypes()
+                    .Select(t => t.GetTableName()))
+                {
+                    tablesMenuItem.DropDownItems.Add(name);
+                }
             }
         }
     }
