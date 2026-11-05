@@ -20,6 +20,12 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'gender' => 0,
+            'weight' => 69.0,
+            'age' => 42,
+            'height' => 180.0,
+            'score' => 0,
+            'streak' => 0,
         ]);
     }
 }
