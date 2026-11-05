@@ -31,6 +31,10 @@
             tableView = new DataGridView();
             menuStrip = new MenuStrip();
             tablesMenuItem = new ToolStripMenuItem();
+            operationsMenuItem = new ToolStripMenuItem();
+            newMenuItem = new ToolStripMenuItem();
+            editMenuItem = new ToolStripMenuItem();
+            deleteMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)tableView).BeginInit();
             menuStrip.SuspendLayout();
             SuspendLayout();
@@ -45,7 +49,7 @@
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { tablesMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { tablesMenuItem, operationsMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(800, 24);
@@ -57,6 +61,34 @@
             tablesMenuItem.Name = "tablesMenuItem";
             tablesMenuItem.Size = new Size(53, 20);
             tablesMenuItem.Text = "Táblák";
+            // 
+            // operationsMenuItem
+            // 
+            operationsMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newMenuItem, editMenuItem, deleteMenuItem });
+            operationsMenuItem.Name = "operationsMenuItem";
+            operationsMenuItem.Size = new Size(74, 20);
+            operationsMenuItem.Text = "Műveletek";
+            // 
+            // newMenuItem
+            // 
+            newMenuItem.Name = "newMenuItem";
+            newMenuItem.Size = new Size(180, 22);
+            newMenuItem.Text = "Új...";
+            newMenuItem.Click += newMenuItem_Click;
+            // 
+            // editMenuItem
+            // 
+            editMenuItem.Name = "editMenuItem";
+            editMenuItem.Size = new Size(180, 22);
+            editMenuItem.Text = "Szerkesztés...";
+            editMenuItem.Click += editMenuItem_Click;
+            // 
+            // deleteMenuItem
+            // 
+            deleteMenuItem.Name = "deleteMenuItem";
+            deleteMenuItem.Size = new Size(180, 22);
+            deleteMenuItem.Text = "Törlés...";
+            deleteMenuItem.Click += deleteMenuItem_Click;
             // 
             // AdminPanel
             // 
@@ -81,5 +113,9 @@
         private DataGridView tableView;
         private MenuStrip menuStrip;
         private ToolStripMenuItem tablesMenuItem;
+        private ToolStripMenuItem operationsMenuItem;
+        private ToolStripMenuItem newMenuItem;
+        private ToolStripMenuItem editMenuItem;
+        private ToolStripMenuItem deleteMenuItem;
     }
 }

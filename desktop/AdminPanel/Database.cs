@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MySqlConnector;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdminPanel
 {
@@ -14,6 +15,14 @@ namespace AdminPanel
         public DbSet<Item> Items { get; set; }
         public DbSet<UserAllergies> UserAllergies { get; set; }
         public DbSet<ItemAllergenes> ItemAllergenes { get; set; }
+
+        public dynamic? GetSetForTable(string tableName)
+        {
+            var entity = Model.GetEntityTypes().First(e => e.GetTableName() == tableName);
+            var entityType = entity.ClrType;
+            var set = this.Set(entityType);
+            return set;
+        }
 
         // AI generated
         protected override void OnModelCreating(ModelBuilder modelBuilder)

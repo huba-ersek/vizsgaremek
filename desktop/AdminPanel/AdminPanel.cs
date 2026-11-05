@@ -28,9 +28,7 @@ namespace AdminPanel
                 return;
             using (var ctx = new FitnessContext())
             {
-                var entity = ctx.Model.GetEntityTypes().First(e => e.GetTableName() == tableName);
-                var entityType = entity.ClrType;
-                var set = ctx.Set(entityType);
+                var set = ctx.GetSetForTable(tableName) as IQueryable;
                 var list = set!.GetEnumerator().ToIEnumerable().Cast<object>().ToList();
                 tableView.DataSource = list;
             }
@@ -45,6 +43,21 @@ namespace AdminPanel
             selectedItem = item;
             item.Checked = true;
             FillTableView(item.Text);
+        }
+
+        private void newMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void editMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void deleteMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
