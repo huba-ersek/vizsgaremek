@@ -28,9 +28,27 @@ namespace AdminPanel
                 return;
             using (var ctx = new FitnessContext())
             {
-                var set = ctx.GetSetForTable(tableName) as IQueryable;
-                var list = set!.GetEnumerator().ToIEnumerable().Cast<object>().ToList();
-                tableView.DataSource = list;
+                // TODO: find a more dynamic way
+                switch (tableName)
+                {
+                    case "users":
+                        tableView.DataSource = ctx.Users.ToList();
+                        break;
+                    case "allergenes":
+                        tableView.DataSource = ctx.Allergenes.ToList();
+                        break;
+                    case "user_allergies":
+                        tableView.DataSource = ctx.UserAllergies.ToList();
+                        break;
+                    case "items":
+                        tableView.DataSource = ctx.Items.ToList();
+                        break;
+                    case "item_allergenes":
+                        tableView.DataSource = ctx.ItemAllergenes.ToList();
+                        break;
+                    default:
+                        throw new InvalidDataException("unknown table name");
+                }
             }
         }
 
