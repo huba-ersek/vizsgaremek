@@ -31,19 +31,19 @@ namespace AdminPanel
                 // TODO: find a more dynamic way
                 switch (tableName)
                 {
-                    case "users":
+                    case DatabaseConstants.USERS_TABLE:
                         tableView.DataSource = ctx.Users.ToList();
                         break;
-                    case "allergenes":
+                    case DatabaseConstants.ALLERGENES_TABLE:
                         tableView.DataSource = ctx.Allergenes.ToList();
                         break;
-                    case "user_allergies":
+                    case DatabaseConstants.USER_ALLERGIES_TABLE:
                         tableView.DataSource = ctx.UserAllergies.ToList();
                         break;
-                    case "items":
+                    case DatabaseConstants.ITEMS_TABLE:
                         tableView.DataSource = ctx.Items.ToList();
                         break;
-                    case "item_allergenes":
+                    case DatabaseConstants.ITEM_ALLERGENES_TABLE:
                         tableView.DataSource = ctx.ItemAllergenes.ToList();
                         break;
                     default:

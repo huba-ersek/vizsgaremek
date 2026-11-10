@@ -6,6 +6,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdminPanel
 {
+    internal static class DatabaseConstants
+    {
+        public const string USERS_TABLE = "users";
+        public const string ALLERGENES_TABLE = "allergenes";
+        public const string USER_ALLERGIES_TABLE = "user_allergies";
+        public const string ITEMS_TABLE = "items";
+        public const string ITEM_ALLERGENES_TABLE = "item_allergenes";
+    }
     internal class FitnessContext : DbContext
     {
         const string CONN_STRING = "server=localhost;port=3306;database=fitness;uid=root;pwd=;";
@@ -45,7 +53,7 @@ namespace AdminPanel
         }
     }
 
-    [Table("users")]
+    [Table(DatabaseConstants.USERS_TABLE)]
     internal class User
     {
         [Key, Column("id")]
@@ -72,7 +80,7 @@ namespace AdminPanel
         public ICollection<Allergene> Allergies { get; set; } = [];
     }
 
-    [Table("allergenes")]
+    [Table(DatabaseConstants.ALLERGENES_TABLE)]
     internal class Allergene
     {
         [Key, Column("id")]
@@ -83,7 +91,7 @@ namespace AdminPanel
         public ICollection<User> Users { get; set; } = [];
     }
 
-    [Table("user_allergies"), PrimaryKey(nameof(UserId), nameof(AllergeneId))]
+    [Table(DatabaseConstants.USER_ALLERGIES_TABLE), PrimaryKey(nameof(UserId), nameof(AllergeneId))]
     internal class UserAllergies
     {
         [Column("user_id")]
@@ -95,7 +103,7 @@ namespace AdminPanel
         public Allergene Allergene { get; set; } = new Allergene();
     }
 
-    [Table("items")]
+    [Table(DatabaseConstants.ITEMS_TABLE)]
     internal class Item
     {
         [Key, Column("id")]
@@ -112,7 +120,7 @@ namespace AdminPanel
         public double Protein { get; set; }
     }
 
-    [Table("item_allergenes"), PrimaryKey(nameof(ItemId), nameof(AllergeneId))]
+    [Table(DatabaseConstants.ITEM_ALLERGENES_TABLE), PrimaryKey(nameof(ItemId), nameof(AllergeneId))]
     internal class ItemAllergenes
     {
         [Column("item_id")]
