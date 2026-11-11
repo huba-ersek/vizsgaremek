@@ -13,10 +13,20 @@ namespace AdminPanel
         public const string USER_ALLERGIES_TABLE = "user_allergies";
         public const string ITEMS_TABLE = "items";
         public const string ITEM_ALLERGENES_TABLE = "item_allergenes";
+
+        public const string DATABASE_SERVER = "localhost";
+        public const ushort DATABASE_PORT = 3306;
+        public const string DATABASE_NAME = "fitness";
+        public const string DATABASE_USERNAME = "root";
+        public const string DATABASE_PASSWORD = "";
     }
     internal class FitnessContext : DbContext
     {
-        const string CONN_STRING = "server=localhost;port=3306;database=fitness;uid=root;pwd=;";
+        static readonly string CONN_STRING = $"server={DatabaseConstants.DATABASE_SERVER};" +
+            $"port={DatabaseConstants.DATABASE_PORT};" +
+            $"database={DatabaseConstants.DATABASE_NAME};" +
+            $"uid={DatabaseConstants.DATABASE_USERNAME};" +
+            $"pwd={DatabaseConstants.DATABASE_PASSWORD};";
 
         public DbSet<User> Users { get; set; }
         public DbSet<Allergene> Allergenes { get; set; }
