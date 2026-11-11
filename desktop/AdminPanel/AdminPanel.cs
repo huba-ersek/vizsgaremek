@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AdminPanel
 {
@@ -14,6 +16,18 @@ namespace AdminPanel
         {
             using (var ctx = new FitnessContext())
             {
+                var databaseCreator = ctx.GetService<IRelationalDatabaseCreator>();
+                if (!databaseCreator.Exists() || !databaseCreator.HasTables())
+                {
+                    MessageBox.Show(
+                        "Az adatbázis még nem létezik, vagy üres! A migrációt az artisan végzi!\n\n" +
+                        "Az OK gombra kattintva a program kilép!",
+                        "Hiba",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                    Environment.Exit(-1);
+                }
                 foreach (var name in ctx.Model.GetEntityTypes()
                     .Select(t => t.GetTableName()))
                 {
