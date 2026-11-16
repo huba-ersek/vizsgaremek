@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Data.Entity.Infrastructure;
 
 namespace AdminPanel
 {
@@ -49,6 +50,12 @@ namespace AdminPanel
                 DatabaseConstants.ITEM_ALLERGENES_TABLE => ctx.ItemAllergenes.ToList(),
                 _ => throw new InvalidDataException("unknown table name"),
             };
+            int width = (tableView.Width - tableView.RowHeadersWidth) / tableView.Columns.Count;
+            foreach (DataGridViewColumn column in tableView.Columns)
+            {
+                column.Width = width;
+            }
+            //MessageBox.Show(tableView.RowHeadersWidth.ToString());
         }
 
         private void TableItem_Click(object sender, EventArgs e)
@@ -74,7 +81,21 @@ namespace AdminPanel
 
         private void deleteMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (selectedItem == null)
+            {
+                MessageBox.Show("Nincs tábla kiválasztva!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (FitnessContext.IsTableImmutable(selectedItem.Text!))
+            {
+                MessageBox.Show("Ennek a táblának az adatai nem törölhetõek!", "Hiba",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            using var ctx = new FitnessContext();
+            var set = ctx.GetSetByTableName(selectedItem.Text!);
+            // ezt lehetne használni dinamikus cuccokhoz
+            MessageBox.Show(set!.ElementType.ToString());
         }
     }
 }

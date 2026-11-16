@@ -20,6 +20,7 @@ namespace AdminPanel
         public const string DATABASE_USERNAME = "root";
         public const string DATABASE_PASSWORD = "";
     }
+
     internal class FitnessContext : DbContext
     {
         static readonly string CONN_STRING = $"server={DatabaseConstants.DATABASE_SERVER};" +
@@ -34,6 +35,25 @@ namespace AdminPanel
         public DbSet<UserAllergies> UserAllergies { get; set; }
         public DbSet<ItemAllergenes> ItemAllergenes { get; set; }
 
+        public static bool IsTableImmutable(string name)
+        {
+            return name == DatabaseConstants.ALLERGENES_TABLE;
+        }
+        
+        public IQueryable<object>? GetSetByTableName(string? tableName)
+        {
+            if (tableName == null) return null;
+            return tableName switch
+            {
+                DatabaseConstants.USERS_TABLE => Users,
+                DatabaseConstants.ALLERGENES_TABLE => Allergenes,
+                DatabaseConstants.USER_ALLERGIES_TABLE => UserAllergies,
+                DatabaseConstants.ITEMS_TABLE => Items,
+                DatabaseConstants.ITEM_ALLERGENES_TABLE => ItemAllergenes,
+                _ => null
+            };
+        }
+        
         // AI generated
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
