@@ -89,7 +89,8 @@ namespace AdminPanel
                 MessageBox.Show("Nincs tábla kiválasztva!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (FitnessContext.IsTableImmutable(selectedItem.Text!))
+            string tableName = selectedItem.Text!;
+            if (FitnessContext.IsTableImmutable(tableName))
             {
                 MessageBox.Show("Ennek a táblának az adatai nem törölhetõek!", "Hiba",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -112,7 +113,7 @@ namespace AdminPanel
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.No)
                 return;
-            switch (selectedItem.Text!)
+            switch (tableName)
             {
                 case DatabaseConstants.USERS_TABLE:
                     {
@@ -150,6 +151,7 @@ namespace AdminPanel
                     throw new InvalidDataException("unknown table name");
             }
             ctx.SaveChanges();
+            FillTableView(tableName);
             //ctx.Database.Sql
             //MessageBox.Show(string.Join('\n', entityType.GetProperties().Select(i => i.Name)));
             //tableView.SelectedRows
