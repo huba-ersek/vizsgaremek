@@ -127,6 +127,7 @@ namespace AdminPanel
                         .Select(row => ((int)row.Cells["UserId"].Value!, (int)row.Cells["AllergeneId"].Value!));
                         bool selector(UserAllergies ua) => selectedIdPairs.Contains((ua.UserId, ua.AllergeneId));
                         var userAllergies = ctx.UserAllergies.Where(selector);
+                        ctx.UserAllergies.RemoveRange(userAllergies);
                         break;
                     }
                 case DatabaseConstants.ITEMS_TABLE:
@@ -142,6 +143,7 @@ namespace AdminPanel
                             .Select(row => ((int)row.Cells["ItemId"].Value!, (int)row.Cells["AllergeneId"].Value!));
                         bool selector(ItemAllergenes ia) => selectedIdPairs.Contains((ia.ItemId, ia.AllergeneId));
                         var itemAllergenes = ctx.ItemAllergenes.Where(selector);
+                        ctx.ItemAllergenes.RemoveRange(itemAllergenes);
                         break;
                     }
                 default:
