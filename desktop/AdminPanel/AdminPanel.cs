@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Data.Entity.Infrastructure;
 
+// TODO: newitem, edititem, deletetime
+//       filter by fields
+//       login form
+//       experiment with more dynamic queries
 namespace AdminPanel
 {
     public partial class AdminPanel : Form
@@ -93,9 +96,61 @@ namespace AdminPanel
                 return;
             }
             using var ctx = new FitnessContext();
-            var set = ctx.GetSetByTableName(selectedItem.Text!);
-            // ezt lehetne használni dinamikus cuccokhoz
-            MessageBox.Show(set!.ElementType.ToString());
+            /*var set = ctx.GetSetByTableName(selectedItem.Text!);
+            Type entityType = set!.ElementType;
+            var a = ctx.Model.GetEntityTypes().First(e => e.DisplayName() == entityType.Name);
+            MessageBox.Show(string.Join('\n', a.GetKeys().Where(k => k.IsPrimaryKey()).Select(k => k)));*/
+            if (tableView.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("A törléshez válasszon ki legalább egy adatsort!", "Hiba",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            var selectedRows = new DataGridViewRow[tableView.SelectedRows.Count];
+            tableView.SelectedRows.CopyTo(selectedRows, 0);
+            var result = MessageBox.Show("Biztosan akarja törölni a kiválasztott adatokat?", "Megerõsítés",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.No)
+                return;
+            switch (selectedItem.Text!)
+            {
+                case DatabaseConstants.USERS_TABLE:
+                    {
+                        var selectedIds = selectedRows.Select(row => (int)row.Cells["Id"].Value!);
+                        var users = ctx.Users.Where(u => selectedIds.Contains(u.Id));
+                        ctx.Users.RemoveRange(users);
+                        break;
+                    }
+                case DatabaseConstants.USER_ALLERGIES_TABLE:
+                    {
+                        var selectedIdPairs = selectedRows
+                        .Select(row => ((int)row.Cells["UserId"].Value!, (int)row.Cells["AllergeneId"].Value!));
+                        bool selector(UserAllergies ua) => selectedIdPairs.Contains((ua.UserId, ua.AllergeneId));
+                        var userAllergies = ctx.UserAllergies.Where(selector);
+                        break;
+                    }
+                case DatabaseConstants.ITEMS_TABLE:
+                    {
+                        var selectedIds = selectedRows.Select(row => (int)row.Cells["Id"].Value!);
+                        var items = ctx.Items.Where(i => selectedIds.Contains(i.Id));
+                        ctx.Items.RemoveRange(items);
+                        break;
+                    }
+                case DatabaseConstants.ITEM_ALLERGENES_TABLE:
+                    {
+                        var selectedIdPairs = selectedRows
+                            .Select(row => ((int)row.Cells["ItemId"].Value!, (int)row.Cells["AllergeneId"].Value!));
+                        bool selector(ItemAllergenes ia) => selectedIdPairs.Contains((ia.ItemId, ia.AllergeneId));
+                        var itemAllergenes = ctx.ItemAllergenes.Where(selector);
+                        break;
+                    }
+                default:
+                    throw new InvalidDataException("unknown table name");
+            }
+            ctx.SaveChanges();
+            //ctx.Database.Sql
+            //MessageBox.Show(string.Join('\n', entityType.GetProperties().Select(i => i.Name)));
+            //tableView.SelectedRows
         }
     }
 }

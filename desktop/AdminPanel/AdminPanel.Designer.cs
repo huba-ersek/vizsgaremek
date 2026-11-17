@@ -72,21 +72,21 @@
             // newMenuItem
             // 
             newMenuItem.Name = "newMenuItem";
-            newMenuItem.Size = new Size(180, 22);
+            newMenuItem.Size = new Size(141, 22);
             newMenuItem.Text = "Új...";
             newMenuItem.Click += newMenuItem_Click;
             // 
             // editMenuItem
             // 
             editMenuItem.Name = "editMenuItem";
-            editMenuItem.Size = new Size(180, 22);
+            editMenuItem.Size = new Size(141, 22);
             editMenuItem.Text = "Szerkesztés...";
             editMenuItem.Click += editMenuItem_Click;
             // 
             // deleteMenuItem
             // 
             deleteMenuItem.Name = "deleteMenuItem";
-            deleteMenuItem.Size = new Size(180, 22);
+            deleteMenuItem.Size = new Size(141, 22);
             deleteMenuItem.Text = "Törlés...";
             deleteMenuItem.Click += deleteMenuItem_Click;
             // 
